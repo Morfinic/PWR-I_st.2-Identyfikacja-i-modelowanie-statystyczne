@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2j5esmf2y4b4"]
+
+[ext_resource type="Texture2D" uid="uid://ugefb2v86tff" path="res://Assets/Rabbit.png" id="1_ishvb"]
+[ext_resource type="Script" path="res://Agents/Rabbit/rabbit.gd" id="1_lmduu"]
+[ext_resource type="Script" path="res://Agents/stats.gd" id="2_fan0c"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lp5co"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y6pvp"]
+radius = 128.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwvj3"]
+radius = 32.0
+
+[node name="Rabbit" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_lmduu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ishvb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lp5co")
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("2_fan0c")
+type = 1
+
+[node name="LOS" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LOS"]
+shape = SubResource("CircleShape2D_y6pvp")
+debug_color = Color(0.957051, 0, 0.534655, 0.42)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="Interact" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact"]
+shape = SubResource("CircleShape2D_mwvj3")
+debug_color = Color(0.279746, 0.631402, 0, 0.42)
+
+[connection signal="body_entered" from="LOS" to="." method="_on_los_body_entered"]
+[connection signal="body_entered" from="Interact" to="." method="_on_interact_body_entered"]
