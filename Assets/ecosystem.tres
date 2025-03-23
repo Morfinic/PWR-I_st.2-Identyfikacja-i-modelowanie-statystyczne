@@ -1,0 +1,52 @@
+[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://bd8ch4bvkx38n"]
+
+[ext_resource type="Texture2D" uid="uid://b564ruguhht24" path="res://Assets/TileSet.png" id="1_3ol8x"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_dm21q"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1hfvp"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_aayit"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_6umkh"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_velb1"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_my1lw"]
+texture = ExtResource("1_3ol8x")
+0:0/0 = 0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_dm21q")
+0:0/0/custom_data_0 = 1.3
+1:0/0 = 0
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_1hfvp")
+1:0/0/navigation_layer_1/polygon = SubResource("NavigationPolygon_aayit")
+1:0/0/custom_data_0 = 0.4
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_6umkh")
+2:0/0/navigation_layer_2/polygon = SubResource("NavigationPolygon_velb1")
+2:0/0/custom_data_0 = 0.8
+2:0/0/custom_data_1 = 1.0
+
+[resource]
+physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
+navigation_layer_1/layers = 2
+navigation_layer_2/layers = 4
+custom_data_layer_0/name = "vegan_food"
+custom_data_layer_0/type = 3
+custom_data_layer_1/name = "water"
+custom_data_layer_1/type = 3
+sources/0 = SubResource("TileSetAtlasSource_my1lw")

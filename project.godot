@@ -11,12 +11,13 @@ config_version=5
 [application]
 
 config/name="Ekosystem_modelowanie"
+run/main_scene="res://Scenes/Enviroment/ecosystem.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Types="*res://Enviroment/Types.gd"
+Types="*res://Globals/Types.gd"
 
 [editor]
 
@@ -26,6 +27,12 @@ version_control/autoload_on_startup=true
 [global_group]
 
 Food=""
+
+[layer_names]
+
+2d_navigation/layer_1="Forest"
+2d_navigation/layer_2="Desert"
+2d_navigation/layer_3="Water"
 
 [rendering]
 

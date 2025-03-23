@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://c2j5esmf2y4b4"]
 
 [ext_resource type="Texture2D" uid="uid://ugefb2v86tff" path="res://Assets/Rabbit.png" id="1_ishvb"]
-[ext_resource type="Script" path="res://Agents/Rabbit/rabbit.gd" id="1_lmduu"]
-[ext_resource type="Script" path="res://Agents/stats.gd" id="2_fan0c"]
+[ext_resource type="Script" path="res://Scenes/Actors/Rabbit/rabbit.gd" id="1_lmduu"]
+[ext_resource type="Script" path="res://Scenes/Actors/stats.gd" id="2_fan0c"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lp5co"]
 radius = 16.0
@@ -47,6 +47,12 @@ grow_horizontal = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interact"]
 shape = SubResource("CircleShape2D_mwvj3")
 debug_color = Color(0.279746, 0.631402, 0, 0.42)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_layers = 0
+avoidance_mask = 0
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 0, 1)
 
 [connection signal="body_entered" from="LOS" to="." method="_on_los_body_entered"]
 [connection signal="body_entered" from="Interact" to="." method="_on_interact_body_entered"]
