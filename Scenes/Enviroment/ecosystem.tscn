@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://tty0xdktpxg0"]
+[gd_scene load_steps=6 format=4 uid="uid://tty0xdktpxg0"]
 
 [ext_resource type="TileSet" uid="uid://bd8ch4bvkx38n" path="res://Assets/ecosystem.tres" id="1_3v1yy"]
 [ext_resource type="Script" path="res://Scenes/Enviroment/enviroment.gd" id="2_eprpa"]
 [ext_resource type="Script" path="res://Scenes/Enviroment/food.gd" id="3_4k7ug"]
 [ext_resource type="PackedScene" uid="uid://blbob2a2htwvb" path="res://Scenes/Actors/Food/food.tscn" id="4_odo7x"]
+[ext_resource type="PackedScene" uid="uid://c2j5esmf2y4b4" path="res://Scenes/Actors/Rabbit/Rabbit.tscn" id="5_23k51"]
 
 [node name="Ecosystem" type="Node"]
 
@@ -13,7 +14,7 @@ tile_set = ExtResource("1_3v1yy")
 script = ExtResource("2_eprpa")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+zoom = Vector2(2, 2)
 
 [node name="Food" type="Node" parent="."]
 script = ExtResource("3_4k7ug")
@@ -24,5 +25,19 @@ wait_time = 15.0
 autostart = true
 
 [node name="Creatures" type="Node" parent="."]
+
+[node name="Rabbit" parent="Creatures" instance=ExtResource("5_23k51")]
+
+[node name="Food2" parent="." instance=ExtResource("4_odo7x")]
+position = Vector2(-72, -40)
+
+[node name="Food3" parent="." instance=ExtResource("4_odo7x")]
+position = Vector2(-105, 10)
+
+[node name="Food4" parent="." instance=ExtResource("4_odo7x")]
+position = Vector2(-145, -50)
+
+[node name="Food5" parent="." instance=ExtResource("4_odo7x")]
+position = Vector2(-14, -39)
 
 [connection signal="timeout" from="Food/Food_Spawner" to="Food" method="_on_food_spawner_timeout"]

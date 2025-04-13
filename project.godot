@@ -24,6 +24,10 @@ Types="*res://Globals/Types.gd"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/imjp94.yafsm/plugin.cfg")
+
 [global_group]
 
 Food=""

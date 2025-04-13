@@ -18,7 +18,7 @@ func _on_food_spawner_timeout() -> void:
 		# Wysana z palca funkcja określająca ilość jedzenia w zależności od rozmiaru biomu
 		# Z wymuszeniem pojawienia się minimum jednego pożywienia
 		var food_scarcity = enviroment.get_cell_tile_data(biome[0]).get_custom_data("vegan_food")
-		var food_size = maxi(log(biome.size()) * food_scarcity, 1)
+		var food_size = maxi(log(biome.size()), 1) * food_scarcity
 		var food_tiles = biome.duplicate()
 		food_tiles.shuffle()
 		food_tiles = food_tiles.slice(0, food_size)

@@ -10,7 +10,7 @@ var hunger: float = 50
 var thirst: float = 50
 
 #niezmienne statystyki agenta
-var speed: float = randf_range(100, 200)
+var speed: float = randf_range(100, 200)/2
 var hungerLoss: float = randf_range(5, 15)
 var thirstLoss: float = randf_range(5, 15)
 

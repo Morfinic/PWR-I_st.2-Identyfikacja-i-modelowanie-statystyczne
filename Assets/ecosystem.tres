@@ -37,7 +37,6 @@ texture = ExtResource("1_3ol8x")
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_6umkh")
 2:0/0/navigation_layer_2/polygon = SubResource("NavigationPolygon_velb1")
-2:0/0/custom_data_0 = 0.8
 2:0/0/custom_data_1 = 1.0
 
 [resource]
