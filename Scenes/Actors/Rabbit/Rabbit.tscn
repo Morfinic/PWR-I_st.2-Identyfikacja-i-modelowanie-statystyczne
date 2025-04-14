@@ -15,31 +15,76 @@ script = ExtResource("4_ahhtf")
 name = "Entry"
 metadata/graph_offset = Vector2(366, 182)
 
-[sub_resource type="Resource" id="Resource_v55o4"]
+[sub_resource type="Resource" id="Resource_n2a8r"]
 script = ExtResource("4_ahhtf")
-name = "Idle"
-metadata/graph_offset = Vector2(566, 182)
+name = "Flee"
+metadata/graph_offset = Vector2(986, 182)
 
 [sub_resource type="Resource" id="Resource_pyj1p"]
 script = ExtResource("4_ahhtf")
 name = "Hungry"
 metadata/graph_offset = Vector2(765.5, 22)
 
+[sub_resource type="Resource" id="Resource_v55o4"]
+script = ExtResource("4_ahhtf")
+name = "Idle"
+metadata/graph_offset = Vector2(566, 182)
+
 [sub_resource type="Resource" id="Resource_5yidy"]
 script = ExtResource("4_ahhtf")
 name = "Thirsty"
 metadata/graph_offset = Vector2(766, 362)
-
-[sub_resource type="Resource" id="Resource_n2a8r"]
-script = ExtResource("4_ahhtf")
-name = "Flee"
-metadata/graph_offset = Vector2(986, 182)
 
 [sub_resource type="Resource" id="Resource_hgcrq"]
 script = ExtResource("5_qu6lk")
 from = "Entry"
 to = "Idle"
 conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_2y55j"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "predatorNear"
+
+[sub_resource type="Resource" id="Resource_defl4"]
+script = ExtResource("5_qu6lk")
+from = "Hungry"
+to = "Flee"
+conditions = {
+"predatorNear": SubResource("Resource_2y55j")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_8bgr1"]
+script = ExtResource("6_tg0d7")
+value = false
+comparation = 0
+name = "isHungry"
+
+[sub_resource type="Resource" id="Resource_g4bwj"]
+script = ExtResource("5_qu6lk")
+from = "Hungry"
+to = "Idle"
+conditions = {
+"isHungry": SubResource("Resource_8bgr1")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_qyngy"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "predatorNear"
+
+[sub_resource type="Resource" id="Resource_8psrp"]
+script = ExtResource("5_qu6lk")
+from = "Idle"
+to = "Flee"
+conditions = {
+"predatorNear": SubResource("Resource_qyngy")
+}
 priority = 0
 
 [sub_resource type="Resource" id="Resource_aflrs"]
@@ -72,48 +117,18 @@ conditions = {
 }
 priority = 0
 
-[sub_resource type="Resource" id="Resource_qyngy"]
+[sub_resource type="Resource" id="Resource_w7wir"]
 script = ExtResource("6_tg0d7")
 value = true
 comparation = 0
 name = "predatorNear"
 
-[sub_resource type="Resource" id="Resource_8psrp"]
+[sub_resource type="Resource" id="Resource_y23dw"]
 script = ExtResource("5_qu6lk")
-from = "Idle"
+from = "Thirsty"
 to = "Flee"
 conditions = {
-"predatorNear": SubResource("Resource_qyngy")
-}
-priority = 0
-
-[sub_resource type="Resource" id="Resource_8bgr1"]
-script = ExtResource("6_tg0d7")
-value = false
-comparation = 0
-name = "isHungry"
-
-[sub_resource type="Resource" id="Resource_g4bwj"]
-script = ExtResource("5_qu6lk")
-from = "Hungry"
-to = "Idle"
-conditions = {
-"isHungry": SubResource("Resource_8bgr1")
-}
-priority = 0
-
-[sub_resource type="Resource" id="Resource_2y55j"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
-name = "predatorNear"
-
-[sub_resource type="Resource" id="Resource_defl4"]
-script = ExtResource("5_qu6lk")
-from = "Hungry"
-to = "Flee"
-conditions = {
-"predatorNear": SubResource("Resource_2y55j")
+"predatorNear": SubResource("Resource_w7wir")
 }
 priority = 0
 
@@ -129,21 +144,6 @@ from = "Thirsty"
 to = "Idle"
 conditions = {
 "isThirsty": SubResource("Resource_xige6")
-}
-priority = 0
-
-[sub_resource type="Resource" id="Resource_w7wir"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
-name = "predatorNear"
-
-[sub_resource type="Resource" id="Resource_y23dw"]
-script = ExtResource("5_qu6lk")
-from = "Thirsty"
-to = "Flee"
-conditions = {
-"predatorNear": SubResource("Resource_w7wir")
 }
 priority = 0
 
@@ -233,6 +233,8 @@ debug_color = Color(0.279746, 0.631402, 0, 0.42)
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 16.0
 path_postprocessing = 1
+avoidance_enabled = true
+radius = 16.0
 avoidance_layers = 0
 avoidance_mask = 0
 debug_enabled = true

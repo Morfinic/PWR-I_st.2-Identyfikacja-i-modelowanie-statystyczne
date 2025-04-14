@@ -15,12 +15,16 @@ var isHungry: bool = false
 var sortedFood: bool = false
 var isThirsty: bool = false
 var foodList: Array = []
+var tileset: TileMapLayer
+var canDrink: bool
 
 func _ready() -> void:
 	stats.connect("death", Callable(self, "die"))
 	#velocity = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * stats.speed
 
 func _process(delta: float) -> void:
+	canDrink = wykryj_wode()
+	
 	hunger = stats.hunger
 	thirst = stats.thirst
 	
@@ -64,10 +68,13 @@ func _process(delta: float) -> void:
 	sprite_2d_2.global_position = nav_agent.target_position
 	
 	#wywalanie krolika z wody, nie dziala idealnie
-	for i in get_slide_collision_count():
-		var _collision = get_slide_collision(i)
-		if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
-			global_position = next_path_pos
+	#for i in get_slide_collision_count():
+		#var _collision = get_slide_collision(i)
+		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
+			#global_position = next_path_pos
+	
+	if tileset != null:
+		pass
 	
 	move_and_slide()
 	
@@ -80,14 +87,12 @@ func _on_los_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Food") and foodList.find(body.global_position) == -1:
 		foodList.append(body.global_position)
 		sort_food()
-		print("Znalezione zarcie " + str(foodList))
 
 
 func _on_interact_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Food"):
 		stats.hunger += 50
 		foodList.erase(body.global_position)
-		print("Ojebano zarcie " + str(foodList))
 		body.queue_free()
 
 #Goofy-ahh funkcja, na razie chyba nie dziala, wywolac raz przy wejsciu
@@ -117,3 +122,15 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
+
+
+func wykryj_wode():
+	var pozycja = tileset.get_surrounding_cells(position)
+	
+	for i in pozycja:
+		var tileId = tileset.get_cell_tile_data(i)
+		
+		if tileId != null and tileId.get_custom_data("water") == true:
+			return true
+			
+	return false
