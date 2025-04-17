@@ -15,7 +15,7 @@ func overflow_biome():
 	
 	while !map_copy.is_empty():
 		var biome_block = map_copy.pop_front()
-		var biome_id = self.get_cell_atlas_coords(biome_block)
+		var biome_type = self.get_cell_tile_data(biome_block).get_custom_data("BiomeType")
 		biome = []
 		
 		var neighbours: Array = self.get_surrounding_cells(biome_block)
@@ -23,7 +23,7 @@ func overflow_biome():
 			var neighbour = neighbours.pop_front()
 			
 			if self.get_cell_source_id(neighbour) != -1:
-				if self.get_cell_atlas_coords(neighbour) == biome_id:
+				if self.get_cell_tile_data(neighbour).get_custom_data("BiomeType") in [biome_type, "Any"]:
 					biome.append(neighbour)
 					neighbours.erase(neighbour)
 					var tmp = self.get_surrounding_cells(neighbour)
