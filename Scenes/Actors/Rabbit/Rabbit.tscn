@@ -176,8 +176,8 @@ transitions = {
 }
 name = ""
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lp5co"]
-radius = 16.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1juk"]
+size = Vector2(30, 30)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y6pvp"]
 radius = 128.0
@@ -203,7 +203,7 @@ state_machine = SubResource("Resource_0msxh")
 texture = ExtResource("1_ishvb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_lp5co")
+shape = SubResource("RectangleShape2D_k1juk")
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("2_fan0c")
@@ -233,7 +233,6 @@ debug_color = Color(0.279746, 0.631402, 0, 0.42)
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 16.0
 path_postprocessing = 1
-avoidance_enabled = true
 radius = 16.0
 avoidance_layers = 0
 avoidance_mask = 0

@@ -15,8 +15,8 @@ var hungerLoss: float = randf_range(5, 15)
 var thirstLoss: float = randf_range(5, 15)
 
 func _process(delta: float) -> void:
-	hunger -= hungerLoss * delta
-	#thirst -= thirstLoss * delta
+	#hunger -= hungerLoss * delta
+	thirst -= thirstLoss * delta
 	
 	hunger = clampf(hunger, 0, 100)
 	thirst = clampf(thirst, 0, 100)

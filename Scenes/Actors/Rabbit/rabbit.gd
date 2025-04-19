@@ -1,6 +1,10 @@
 extends CharacterBody2D
 class_name Rabbit
 
+#TODO
+#nav agent strasznie tweakuje, utyka po prostu na terenie
+#moze dodac losowe poruszanie do pozostalych stanow, wyczyscic process i wszystko w FSM?
+
 @onready var stats: Stats = $Stats
 @onready var label: Label = $Label
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
@@ -17,6 +21,7 @@ var isThirsty: bool = false
 var foodList: Array = []
 var tileset: TileMapLayer
 var canDrink: bool
+var waterList: Array = []
 
 func _ready() -> void:
 	stats.connect("death", Callable(self, "die"))
@@ -64,14 +69,15 @@ func _process(delta: float) -> void:
 		self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
 	
 	smp.set_param("isHungry", isHungry)
+	smp.set_param("isThirsty", isThirsty)
 	
 	sprite_2d_2.global_position = nav_agent.target_position
 	
 	#wywalanie krolika z wody, nie dziala idealnie
-	#for i in get_slide_collision_count():
-		#var _collision = get_slide_collision(i)
-		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
-			#global_position = next_path_pos
+	for i in get_slide_collision_count():
+		var _collision = get_slide_collision(i)
+		if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
+			global_position = next_path_pos
 	
 	if tileset != null:
 		pass
@@ -119,18 +125,40 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 		"Hungry":
 			if foodList.size() > 0:
 				nav_agent.target_position = foodList[0]
+		"Thirsty":
+			if waterList.size() > 0:
+				nav_agent.target_position = waterList[0]
+				if canDrink:
+					stats.thirst += 30
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
 
 
+#mozna poprawic funkcje, pozwala pic wode z duzego dystansu
+#func wykryj_wode():
+	#var pozycja = tileset.get_surrounding_cells(position)
+	#
+	#for i in pozycja:
+		#var tileId = tileset.get_cell_tile_data(i)
+		#
+		#if tileId != null and tileId.get_custom_data("water") == true:
+			#if waterList.find(Vector2i(floori(position.x), floori(position.y))) == -1:
+				#waterList.append(Vector2i(floori(position.x), floori(position.y)))
+			#return true
+			#
+	#return false
+
+#dziala lepiej
 func wykryj_wode():
-	var pozycja = tileset.get_surrounding_cells(position)
+	var pozycja = tileset.local_to_map(position)
+	var tileId = tileset.get_cell_tile_data(pozycja)
 	
-	for i in pozycja:
-		var tileId = tileset.get_cell_tile_data(i)
-		
-		if tileId != null and tileId.get_custom_data("water") == true:
-			return true
-			
-	return false
+	if tileId == null:
+		return false
+	elif tileId.get_custom_data("water") == false:
+		return false
+	else:
+		if waterList.find(Vector2i(floori(position.x), floori(position.y))) == -1:
+			waterList.append(Vector2i(floori(position.x), floori(position.y)))
+		return true
