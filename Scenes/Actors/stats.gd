@@ -12,10 +12,10 @@ var thirst: float = 50
 #niezmienne statystyki agenta
 var speed: float = randf_range(100, 200)/2
 var hungerLoss: float = randf_range(5, 15)
-var thirstLoss: float = randf_range(5, 15)
+var thirstLoss: float = randf_range(1, 8)
 
 func _process(delta: float) -> void:
-	#hunger -= hungerLoss * delta
+	hunger -= hungerLoss * delta
 	thirst -= thirstLoss * delta
 	
 	hunger = clampf(hunger, 0, 100)

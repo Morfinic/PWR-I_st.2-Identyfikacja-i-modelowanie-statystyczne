@@ -21,7 +21,7 @@ var isThirsty: bool = false
 var foodList: Array = []
 var tileset: TileMapLayer
 var canDrink: bool
-var waterList: Array = []
+var waterList: Vector2 = Vector2(INF, INF)
 
 func _ready() -> void:
 	stats.connect("death", Callable(self, "die"))
@@ -49,14 +49,6 @@ func _process(delta: float) -> void:
 	
 	label.text = "Hunger " + str(floorf(hunger)) + " Thirst: " + str(floorf(thirst))
 	
-	
-	if isHungry and foodList.size() > 0:
-		#velocity = global_position.direction_to(foodList[0].global_position) * stats.speed
-		
-					
-		pass
-	elif isThirsty:
-		pass
 	#elif nav_agent.is_navigation_finished() or next_path_pos == Vector2.ZERO:
 		#nav_agent.target_position = Vector2.ZERO
 		###velocity = velocity.rotated(deg_to_rad(randf_range(-90, 90)))
@@ -79,8 +71,6 @@ func _process(delta: float) -> void:
 		if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
 			global_position = next_path_pos
 	
-	if tileset != null:
-		pass
 	
 	move_and_slide()
 	
@@ -115,21 +105,27 @@ func sort_food():
 
 
 func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
+	label.text += " " + str(state)
 	match state:
 		"Idle":
-			if nav_agent.target_position != targetPosition:
-				nav_agent.target_position = targetPosition
-			else:
-				if nav_agent.get_final_position().distance_to(global_position) < 32:
-					targetPosition = self.global_position + Vector2(randf_range(-50, 50), randf_range(-50, 50))
+			random_movement()
+			#if nav_agent.target_position != targetPosition:
+				#nav_agent.target_position = targetPosition
+			#else:
+				#if nav_agent.get_final_position().distance_to(global_position) < 32:
+					#targetPosition = self.global_position + Vector2(randf_range(-50, 50), randf_range(-50, 50))
 		"Hungry":
 			if foodList.size() > 0:
 				nav_agent.target_position = foodList[0]
+			else:
+				random_movement()
 		"Thirsty":
-			if waterList.size() > 0:
-				nav_agent.target_position = waterList[0]
+			if waterList != Vector2(INF, INF):
+				nav_agent.target_position = waterList
 				if canDrink:
 					stats.thirst += 30
+			else:
+				random_movement()
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
@@ -159,6 +155,14 @@ func wykryj_wode():
 	elif tileId.get_custom_data("water") == false:
 		return false
 	else:
-		if waterList.find(Vector2i(floori(position.x), floori(position.y))) == -1:
-			waterList.append(Vector2i(floori(position.x), floori(position.y)))
+		if waterList != position:
+			waterList = position
 		return true
+
+#Funkcja do wybierania losowego punktu docelowego, przeniesiona z idle do wszystkich stanow
+func random_movement():
+	if nav_agent.target_position != targetPosition:
+		nav_agent.target_position = targetPosition
+	else:
+		if nav_agent.get_final_position().distance_to(global_position) < 32:
+			targetPosition = self.global_position + Vector2(randf_range(-70, 70), randf_range(-70, 70))
