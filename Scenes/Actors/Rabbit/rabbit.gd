@@ -117,13 +117,16 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 		"Hungry":
 			if foodList.size() > 0:
 				nav_agent.target_position = foodList[0]
+				#wywalanie jedzenia jesli go tam nie ma, mozna by jakos poprawic
+				if position.distance_to(nav_agent.target_position) < 0.1:
+					foodList.pop_at(0)
 			else:
 				random_movement()
 		"Thirsty":
 			if waterList != Vector2(INF, INF):
 				nav_agent.target_position = waterList
 				if canDrink:
-					stats.thirst += 30
+					stats.thirst = 100
 			else:
 				random_movement()
 		_:
@@ -165,4 +168,10 @@ func random_movement():
 		nav_agent.target_position = targetPosition
 	else:
 		if nav_agent.get_final_position().distance_to(global_position) < 32:
-			targetPosition = self.global_position + Vector2(randf_range(-70, 70), randf_range(-70, 70))
+			#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
+			while true:
+				targetPosition = self.global_position + Vector2(randf_range(-70, 70), randf_range(-70, 70))
+				var pozycja = tileset.local_to_map(targetPosition)
+				var tileId = tileset.get_cell_tile_data(pozycja)
+				if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):
+					break
