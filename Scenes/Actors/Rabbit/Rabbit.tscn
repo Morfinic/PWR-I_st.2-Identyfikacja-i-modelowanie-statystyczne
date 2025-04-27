@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://c2j5esmf2y4b4"]
+[gd_scene load_steps=45 format=3 uid="uid://c2j5esmf2y4b4"]
 
 [ext_resource type="Texture2D" uid="uid://ugefb2v86tff" path="res://Assets/Rabbit.png" id="1_ishvb"]
 [ext_resource type="Script" path="res://Scenes/Actors/Rabbit/rabbit.gd" id="1_lmduu"]
@@ -18,22 +18,27 @@ metadata/graph_offset = Vector2(366, 182)
 [sub_resource type="Resource" id="Resource_n2a8r"]
 script = ExtResource("4_ahhtf")
 name = "Flee"
-metadata/graph_offset = Vector2(986, 182)
+metadata/graph_offset = Vector2(1066, 382)
 
 [sub_resource type="Resource" id="Resource_pyj1p"]
 script = ExtResource("4_ahhtf")
 name = "Hungry"
-metadata/graph_offset = Vector2(765.5, 22)
+metadata/graph_offset = Vector2(965.5, -18)
 
 [sub_resource type="Resource" id="Resource_v55o4"]
 script = ExtResource("4_ahhtf")
 name = "Idle"
-metadata/graph_offset = Vector2(566, 182)
+metadata/graph_offset = Vector2(566, -18)
 
 [sub_resource type="Resource" id="Resource_5yidy"]
 script = ExtResource("4_ahhtf")
 name = "Thirsty"
-metadata/graph_offset = Vector2(766, 362)
+metadata/graph_offset = Vector2(566, 382)
+
+[sub_resource type="Resource" id="Resource_j0ny3"]
+script = ExtResource("4_ahhtf")
+name = "Mating"
+metadata/graph_offset = Vector2(766, 262)
 
 [sub_resource type="Resource" id="Resource_hgcrq"]
 script = ExtResource("5_qu6lk")
@@ -117,6 +122,21 @@ conditions = {
 }
 priority = 0
 
+[sub_resource type="Resource" id="Resource_qme3e"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "mating"
+
+[sub_resource type="Resource" id="Resource_hpg5l"]
+script = ExtResource("5_qu6lk")
+from = "Idle"
+to = "Mating"
+conditions = {
+"mating": SubResource("Resource_qme3e")
+}
+priority = 0
+
 [sub_resource type="Resource" id="Resource_w7wir"]
 script = ExtResource("6_tg0d7")
 value = true
@@ -147,6 +167,66 @@ conditions = {
 }
 priority = 0
 
+[sub_resource type="Resource" id="Resource_pjwbm"]
+script = ExtResource("6_tg0d7")
+value = false
+comparation = 0
+name = "mating"
+
+[sub_resource type="Resource" id="Resource_mu5cm"]
+script = ExtResource("5_qu6lk")
+from = "Mating"
+to = "Idle"
+conditions = {
+"mating": SubResource("Resource_pjwbm")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_4ye1g"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "isThirsty"
+
+[sub_resource type="Resource" id="Resource_8vr0a"]
+script = ExtResource("5_qu6lk")
+from = "Mating"
+to = "Thirsty"
+conditions = {
+"isThirsty": SubResource("Resource_4ye1g")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_gxuj0"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "isHungry"
+
+[sub_resource type="Resource" id="Resource_1fh80"]
+script = ExtResource("5_qu6lk")
+from = "Mating"
+to = "Hungry"
+conditions = {
+"isHungry": SubResource("Resource_gxuj0")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_jaqhi"]
+script = ExtResource("6_tg0d7")
+value = true
+comparation = 0
+name = "predatorNear"
+
+[sub_resource type="Resource" id="Resource_07qxg"]
+script = ExtResource("5_qu6lk")
+from = "Mating"
+to = "Flee"
+conditions = {
+"predatorNear": SubResource("Resource_jaqhi")
+}
+priority = 0
+
 [sub_resource type="Resource" id="Resource_0msxh"]
 script = ExtResource("3_ilbrn")
 states = {
@@ -154,6 +234,7 @@ states = {
 "Flee": SubResource("Resource_n2a8r"),
 "Hungry": SubResource("Resource_pyj1p"),
 "Idle": SubResource("Resource_v55o4"),
+"Mating": SubResource("Resource_j0ny3"),
 "Thirsty": SubResource("Resource_5yidy")
 }
 transitions = {
@@ -167,7 +248,14 @@ transitions = {
 "Idle": {
 "Flee": SubResource("Resource_8psrp"),
 "Hungry": SubResource("Resource_gau10"),
+"Mating": SubResource("Resource_hpg5l"),
 "Thirsty": SubResource("Resource_qddqn")
+},
+"Mating": {
+"Flee": SubResource("Resource_07qxg"),
+"Hungry": SubResource("Resource_1fh80"),
+"Idle": SubResource("Resource_mu5cm"),
+"Thirsty": SubResource("Resource_8vr0a")
 },
 "Thirsty": {
 "Flee": SubResource("Resource_y23dw"),
@@ -185,7 +273,7 @@ radius = 128.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwvj3"]
 radius = 32.0
 
-[node name="Rabbit" type="CharacterBody2D"]
+[node name="Rabbit" type="CharacterBody2D" groups=["Rabbit"]]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_lmduu")
 
@@ -207,6 +295,9 @@ shape = SubResource("RectangleShape2D_k1juk")
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("2_fan0c")
 type = 1
+
+[node name="MatingTimer" type="Timer" parent="Stats"]
+one_shot = true
 
 [node name="LOS" type="Area2D" parent="."]
 
@@ -239,5 +330,6 @@ debug_enabled = true
 debug_path_custom_color = Color(1, 0, 0, 1)
 
 [connection signal="updated" from="StateMachinePlayer" to="." method="_on_state_machine_player_updated"]
+[connection signal="timeout" from="Stats/MatingTimer" to="Stats" method="_on_mating_timer_timeout"]
 [connection signal="body_entered" from="LOS" to="." method="_on_los_body_entered"]
 [connection signal="body_entered" from="Interact" to="." method="_on_interact_body_entered"]

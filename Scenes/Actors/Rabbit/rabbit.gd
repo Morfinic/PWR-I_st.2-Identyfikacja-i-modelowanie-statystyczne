@@ -13,6 +13,7 @@ class_name Rabbit
 
 var hunger
 var thirst
+var mating
 var next_path_pos = Vector2.ZERO
 var targetPosition: Vector2 = global_position
 var isHungry: bool = false
@@ -22,16 +23,22 @@ var foodList: Array = []
 var tileset: TileMapLayer
 var canDrink: bool
 var waterList: Vector2 = Vector2(INF, INF)
+var sex: int
+#var rizz
+var partner
 
 func _ready() -> void:
 	stats.connect("death", Callable(self, "die"))
-	#velocity = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * stats.speed
+	sex = stats.sex
+	print(sex)
+	#rizz = stats.rizz
 
 func _process(delta: float) -> void:
 	canDrink = wykryj_wode()
 	
 	hunger = stats.hunger
 	thirst = stats.thirst
+	mating = stats.mating
 	
 	if hunger < 40:
 		isHungry = true
@@ -62,14 +69,15 @@ func _process(delta: float) -> void:
 	
 	smp.set_param("isHungry", isHungry)
 	smp.set_param("isThirsty", isThirsty)
+	smp.set_param("mating", mating)
 	
 	sprite_2d_2.global_position = nav_agent.target_position
 	
-	#wywalanie krolika z wody, nie dziala idealnie
-	for i in get_slide_collision_count():
-		var _collision = get_slide_collision(i)
-		if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
-			global_position = next_path_pos
+	#wywalanie krolika z wody, nie dziala idealnie, juz chyba niepotrzebne
+	#for i in get_slide_collision_count():
+		#var _collision = get_slide_collision(i)
+		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
+			#global_position = next_path_pos
 	
 	
 	move_and_slide()
@@ -83,13 +91,22 @@ func _on_los_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Food") and foodList.find(body.global_position) == -1:
 		foodList.append(body.global_position)
 		sort_food()
+		
+	if body.is_in_group("Rabbit") and mating:
+		if body.sex != sex and body.mating:
+			partner = body
+			body.partner = self
 
 
 func _on_interact_body_entered(body: Node2D) -> void:
+	#mozna dodac by nie jadly na zapas, po prostu wrzucenie isHungry sprawia ze navAgent nie dziala
 	if body.is_in_group("Food"):
 		stats.hunger += 50
 		foodList.erase(body.global_position)
 		body.queue_free()
+	
+	if mating and body == partner:
+		mate()
 
 #Goofy-ahh funkcja, na razie chyba nie dziala, wywolac raz przy wejsciu
 func sort_food():
@@ -129,6 +146,11 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 					stats.thirst = 100
 			else:
 				random_movement()
+		"Mating":
+			if partner == null:
+				random_movement()
+			else:
+				nav_agent.target_position = partner.position
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
@@ -170,8 +192,17 @@ func random_movement():
 		if nav_agent.get_final_position().distance_to(global_position) < 32:
 			#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
 			while true:
-				targetPosition = self.global_position + Vector2(randf_range(-70, 70), randf_range(-70, 70))
+				targetPosition = self.global_position + Vector2(randf_range(-100, 100), randf_range(-100, 100))
 				var pozycja = tileset.local_to_map(targetPosition)
 				var tileId = tileset.get_cell_tile_data(pozycja)
 				if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):
 					break
+
+
+func mate():
+	print("Yippe")
+	stats.mating = false
+	stats.mating_timer.start()
+	partner = null
+	#dodac stworzenie dziecka i dziedziczenie statystyk po rodzicach
+	
