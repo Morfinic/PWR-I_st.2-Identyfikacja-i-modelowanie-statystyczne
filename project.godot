@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Ekosystem_modelowanie"
 run/main_scene="res://Scenes/Enviroment/ecosystem.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -51,6 +51,10 @@ ZoomOut={
 2d_navigation/layer_1="Forest"
 2d_navigation/layer_2="Desert"
 2d_navigation/layer_3="Water"
+
+[navigation]
+
+2d/use_edge_connections=false
 
 [rendering]
 

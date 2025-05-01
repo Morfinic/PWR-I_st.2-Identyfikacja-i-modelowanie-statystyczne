@@ -5,11 +5,14 @@ class_name Rabbit
 #nav agent strasznie tweakuje, utyka po prostu na terenie
 #moze dodac losowe poruszanie do pozostalych stanow, wyczyscic process i wszystko w FSM?
 
+const RABBIT = preload("res://Scenes/Actors/Rabbit/Rabbit.tscn")
+
 @onready var stats: Stats = $Stats
 @onready var label: Label = $Label
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var smp: Node = $StateMachinePlayer
 @onready var sprite_2d_2: Sprite2D = $Sprite2D2
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 var hunger
 var thirst
@@ -24,14 +27,21 @@ var tileset: TileMapLayer
 var canDrink: bool
 var waterList: Vector2 = Vector2(INF, INF)
 var sex: int
-#var rizz
 var partner
+
+#zmienne wykorzystywane do dziedziczenia genow przez dzieci
+var speedGene: float
+var thirstGene: float
+var hungerGene: float
 
 func _ready() -> void:
 	stats.connect("death", Callable(self, "die"))
 	sex = stats.sex
+	speedGene = stats.speedRandom
+	thirstGene = stats.thirstRandom
+	hungerGene = stats.hungerRandom
+	collision_shape_2d.disabled = true
 	print(sex)
-	#rizz = stats.rizz
 
 func _process(delta: float) -> void:
 	canDrink = wykryj_wode()
@@ -147,6 +157,7 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 			else:
 				random_movement()
 		"Mating":
+			collision_shape_2d.disabled = false
 			if partner == null:
 				random_movement()
 			else:
@@ -200,9 +211,19 @@ func random_movement():
 
 
 func mate():
-	print("Yippe")
+	collision_shape_2d.disabled = true
 	stats.mating = false
 	stats.mating_timer.start()
+	if sex == 0:
+		birth()
 	partner = null
-	#dodac stworzenie dziecka i dziedziczenie statystyk po rodzicach
+
+func birth():
+	var child = RABBIT.instantiate()
+	child.position = position
+	get_parent().add_child(child)
+	child.inherit((speedGene + partner.speedGene)/2, (thirstGene + partner.thirstGene)/2, (hungerGene + partner.hungerGene)/2)
 	
+
+func inherit(_speedGene, _thirstGene, _hungerGene):
+	stats.reroll(_speedGene, _hungerGene, _thirstGene)
