@@ -40,7 +40,8 @@ func _ready() -> void:
 	speedGene = stats.speedRandom
 	thirstGene = stats.thirstRandom
 	hungerGene = stats.hungerRandom
-	collision_shape_2d.disabled = true
+	#collision_shape_2d.disabled = true
+	collision_shape_2d.set_deferred("disabled", true)
 	print(sex)
 
 func _process(delta: float) -> void:
@@ -72,26 +73,37 @@ func _process(delta: float) -> void:
 		###if nav_agent.navigation_finished:
 		#nav_agent.target_position = self.position + Vector2(randf_range(-50, 50), randf_range(-50, 50))
 #
-	if next_path_pos == Vector2.ZERO or self.position.distance_to(next_path_pos) < 0.5:
-		next_path_pos = nav_agent.get_next_path_position()
-	else:
-		self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
 	
 	smp.set_param("isHungry", isHungry)
 	smp.set_param("isThirsty", isThirsty)
 	smp.set_param("mating", mating)
 	
+	if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
+		next_path_pos = nav_agent.get_next_path_position()
+	else:
+		self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
+		
 	sprite_2d_2.global_position = nav_agent.target_position
+		
+	move_and_slide()
 	
 	#wywalanie krolika z wody, nie dziala idealnie, juz chyba niepotrzebne
 	#for i in get_slide_collision_count():
 		#var _collision = get_slide_collision(i)
 		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
 			#global_position = next_path_pos
-	
-	
-	move_and_slide()
-	
+
+
+#func _physics_process(delta: float) -> void:
+	#if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
+		#next_path_pos = nav_agent.get_next_path_position()
+	#else:
+		#self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
+		#
+	#sprite_2d_2.global_position = nav_agent.target_position
+		#
+	#move_and_slide()
+
 
 func die():
 	queue_free()
@@ -211,7 +223,8 @@ func random_movement():
 
 
 func mate():
-	collision_shape_2d.disabled = true
+	collision_shape_2d.set_deferred("disabled", true)
+	#collision_shape_2d.disabled = true
 	stats.mating = false
 	stats.mating_timer.start()
 	if sex == 0:
@@ -221,8 +234,12 @@ func mate():
 func birth():
 	var child = RABBIT.instantiate()
 	child.position = position
-	get_parent().add_child(child)
-	child.inherit((speedGene + partner.speedGene)/2, (thirstGene + partner.thirstGene)/2, (hungerGene + partner.hungerGene)/2)
+	#get_parent().add_child(child)
+	get_parent().call_deferred("add_child", child)
+	#child.inherit((speedGene + partner.speedGene)/2, (thirstGene + partner.thirstGene)/2, (hungerGene + partner.hungerGene)/2)
+	child.call_deferred("inherit", 
+		(speedGene + partner.speedGene)/2, (thirstGene + partner.thirstGene)/2, (hungerGene + partner.hungerGene)/2
+	)
 	
 
 func inherit(_speedGene, _thirstGene, _hungerGene):

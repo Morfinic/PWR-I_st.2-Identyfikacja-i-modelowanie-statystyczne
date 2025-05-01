@@ -35,6 +35,10 @@ script = ExtResource("6_jj65c")
 [node name="Rabbit" parent="Creatures" instance=ExtResource("5_23k51")]
 
 [node name="Rabbit2" parent="Creatures" instance=ExtResource("5_23k51")]
+position = Vector2(-128, 88)
+
+[node name="Rabbit3" parent="Creatures" instance=ExtResource("5_23k51")]
+position = Vector2(-48, -120)
 
 [connection signal="timeout" from="Food/Food_Spawner" to="Food" method="_on_food_spawner_timeout"]
 [connection signal="child_entered_tree" from="Creatures" to="Creatures" method="_on_child_entered_tree"]
