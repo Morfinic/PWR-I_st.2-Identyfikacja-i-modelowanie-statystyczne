@@ -32,6 +32,7 @@ enabled=PackedStringArray("res://addons/imjp94.yafsm/plugin.cfg")
 
 Food=""
 Rabbit=""
+Fox=""
 
 [input]
 

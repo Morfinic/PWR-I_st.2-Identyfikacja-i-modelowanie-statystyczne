@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbvntcaqj0d5n"]
+
+[ext_resource type="Script" uid="uid://dpbb2tmjrb0xi" path="res://Scenes/Actors/stats.gd" id="1_y7t4w"]
+
+[node name="Stats" type="Node"]
+script = ExtResource("1_y7t4w")
+type = 1
+
+[node name="MatingTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="MatingTimer" to="." method="_on_mating_timer_timeout"]

@@ -12,8 +12,8 @@ var hungerRandom = randf_range(5, 7)
 var thirstRandom = randf_range(5, 7)
 
 #aktualny stan agenta
-var hunger: float = 50
-var thirst: float = 50
+var hunger: float = 100
+var thirst: float = 100
 var mating: bool = false
 
 #niezmienne statystyki agenta
@@ -28,8 +28,8 @@ func _ready() -> void:
 	$MatingTimer.start()
 
 func _process(delta: float) -> void:
-	#hunger -= hungerLoss * delta
-	#thirst -= thirstLoss * delta
+	hunger -= hungerLoss * delta
+	thirst -= thirstLoss * delta
 	
 	hunger = clampf(hunger, 0, 100)
 	thirst = clampf(thirst, 0, 100)

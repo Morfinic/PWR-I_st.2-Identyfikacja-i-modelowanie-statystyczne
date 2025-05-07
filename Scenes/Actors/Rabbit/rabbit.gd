@@ -17,8 +17,8 @@ const RABBIT = preload("res://Scenes/Actors/Rabbit/Rabbit.tscn")
 var hunger
 var thirst
 var mating
-var next_path_pos = Vector2.ZERO
-var targetPosition: Vector2 = global_position
+var next_path_pos: Vector2 = position
+var targetPosition: Vector2 = position
 var isHungry: bool = false
 var sortedFood: bool = false
 var isThirsty: bool = false
@@ -40,8 +40,9 @@ func _ready() -> void:
 	speedGene = stats.speedRandom
 	thirstGene = stats.thirstRandom
 	hungerGene = stats.hungerRandom
+	nav_agent.target_position = position
 	#collision_shape_2d.disabled = true
-	collision_shape_2d.set_deferred("disabled", true)
+	#collision_shape_2d.set_deferred("disabled", true)
 	print(sex)
 
 func _process(delta: float) -> void:
@@ -78,23 +79,6 @@ func _process(delta: float) -> void:
 	smp.set_param("isThirsty", isThirsty)
 	smp.set_param("mating", mating)
 	
-	if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
-		next_path_pos = nav_agent.get_next_path_position()
-	else:
-		self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
-		
-	sprite_2d_2.global_position = nav_agent.target_position
-		
-	move_and_slide()
-	
-	#wywalanie krolika z wody, nie dziala idealnie, juz chyba niepotrzebne
-	#for i in get_slide_collision_count():
-		#var _collision = get_slide_collision(i)
-		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
-			#global_position = next_path_pos
-
-
-#func _physics_process(delta: float) -> void:
 	#if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
 		#next_path_pos = nav_agent.get_next_path_position()
 	#else:
@@ -103,6 +87,22 @@ func _process(delta: float) -> void:
 	#sprite_2d_2.global_position = nav_agent.target_position
 		#
 	#move_and_slide()
+	
+	#wywalanie krolika z wody, nie dziala idealnie, juz chyba niepotrzebne
+	#for i in get_slide_collision_count():
+		#var _collision = get_slide_collision(i)
+		#if _collision.get_collider() != null and _collision.get_collider().name == "Enviroment":
+			#global_position = next_path_pos
+
+
+func _physics_process(delta: float) -> void:
+	if self.position.distance_to(next_path_pos) < 1:
+		next_path_pos = nav_agent.get_next_path_position()
+	else:
+		self.velocity = self.global_position.direction_to(next_path_pos) * stats.speed
+		
+		
+	move_and_slide()
 
 
 func die():
@@ -157,7 +157,7 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 			if foodList.size() > 0:
 				nav_agent.target_position = foodList[0]
 				#wywalanie jedzenia jesli go tam nie ma, mozna by jakos poprawic
-				if position.distance_to(nav_agent.target_position) < 0.1:
+				if position.distance_to(nav_agent.target_position) < 1:
 					foodList.pop_at(0)
 			else:
 				random_movement()
@@ -169,7 +169,7 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 			else:
 				random_movement()
 		"Mating":
-			collision_shape_2d.disabled = false
+			#collision_shape_2d.disabled = false
 			if partner == null:
 				random_movement()
 			else:
@@ -209,21 +209,21 @@ func wykryj_wode():
 
 #Funkcja do wybierania losowego punktu docelowego, przeniesiona z idle do wszystkich stanow
 func random_movement():
-	if nav_agent.target_position != targetPosition:
+	if nav_agent.get_final_position().distance_to(global_position) < 32:
+		var targetPosition
+		#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
+		while true:
+			targetPosition = self.global_position + Vector2(randf_range(-100, 100), randf_range(-100, 100))
+			var pozycja = tileset.local_to_map(targetPosition)
+			var tileId = tileset.get_cell_tile_data(pozycja)
+			if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):
+				break
+				
 		nav_agent.target_position = targetPosition
-	else:
-		if nav_agent.get_final_position().distance_to(global_position) < 32:
-			#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
-			while true:
-				targetPosition = self.global_position + Vector2(randf_range(-100, 100), randf_range(-100, 100))
-				var pozycja = tileset.local_to_map(targetPosition)
-				var tileId = tileset.get_cell_tile_data(pozycja)
-				if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):
-					break
 
 
 func mate():
-	collision_shape_2d.set_deferred("disabled", true)
+	#collision_shape_2d.set_deferred("disabled", true)
 	#collision_shape_2d.disabled = true
 	stats.mating = false
 	stats.mating_timer.start()
