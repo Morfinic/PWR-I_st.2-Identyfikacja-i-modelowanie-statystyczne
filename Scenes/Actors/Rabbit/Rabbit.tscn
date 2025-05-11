@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://c2j5esmf2y4b4"]
+[gd_scene load_steps=47 format=3 uid="uid://c2j5esmf2y4b4"]
 
 [ext_resource type="Texture2D" uid="uid://ugefb2v86tff" path="res://Assets/Rabbit.png" id="1_ishvb"]
 [ext_resource type="Script" uid="uid://ddfq3v1lqdwoh" path="res://Scenes/Actors/Rabbit/rabbit.gd" id="1_lmduu"]
@@ -18,7 +18,7 @@ metadata/graph_offset = Vector2(366, 182)
 [sub_resource type="Resource" id="Resource_n2a8r"]
 script = ExtResource("4_ahhtf")
 name = "Flee"
-metadata/graph_offset = Vector2(1066, 382)
+metadata/graph_offset = Vector2(803, 121.5)
 
 [sub_resource type="Resource" id="Resource_pyj1p"]
 script = ExtResource("4_ahhtf")
@@ -33,7 +33,7 @@ metadata/graph_offset = Vector2(566, -18)
 [sub_resource type="Resource" id="Resource_j0ny3"]
 script = ExtResource("4_ahhtf")
 name = "Mating"
-metadata/graph_offset = Vector2(766, 262)
+metadata/graph_offset = Vector2(863, 381.5)
 
 [sub_resource type="Resource" id="Resource_5yidy"]
 script = ExtResource("4_ahhtf")
@@ -227,6 +227,21 @@ conditions = {
 }
 priority = 0
 
+[sub_resource type="Resource" id="Resource_tjm8o"]
+script = ExtResource("6_tg0d7")
+value = false
+comparation = 0
+name = "predatorNear"
+
+[sub_resource type="Resource" id="Resource_hr7xn"]
+script = ExtResource("5_qu6lk")
+from = "Flee"
+to = "Idle"
+conditions = {
+"predatorNear": SubResource("Resource_tjm8o")
+}
+priority = 0
+
 [sub_resource type="Resource" id="Resource_0msxh"]
 script = ExtResource("3_ilbrn")
 states = {
@@ -240,6 +255,9 @@ states = {
 transitions = {
 "Entry": {
 "Idle": SubResource("Resource_hgcrq")
+},
+"Flee": {
+"Idle": SubResource("Resource_hr7xn")
 },
 "Hungry": {
 "Flee": SubResource("Resource_defl4"),
@@ -273,7 +291,7 @@ radius = 128.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwvj3"]
 radius = 32.0
 
-[node name="Rabbit" type="CharacterBody2D" groups=["Rabbit"]]
+[node name="Rabbit" type="CharacterBody2D" groups=["Chain0", "Rabbit"]]
 scale = Vector2(0.5, 0.5)
 collision_layer = 3
 collision_mask = 0
@@ -323,8 +341,10 @@ target_desired_distance = 16.0
 path_postprocessing = 1
 avoidance_layers = 0
 avoidance_mask = 0
+debug_enabled = true
 debug_path_custom_color = Color(1, 0, 0, 1)
 
 [connection signal="updated" from="StateMachinePlayer" to="." method="_on_state_machine_player_updated"]
 [connection signal="body_entered" from="LOS" to="." method="_on_los_body_entered"]
+[connection signal="body_exited" from="LOS" to="." method="_on_los_body_exited"]
 [connection signal="body_entered" from="Interact" to="." method="_on_interact_body_entered"]

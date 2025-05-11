@@ -7,9 +7,9 @@ signal death
 @onready var mating_timer: Timer = $MatingTimer
 
 #zmienne do losowanie statystyk, dziedziczone po rodzicach
-var speedRandom = randf_range(70, 120)
-var hungerRandom = randf_range(5, 7)
-var thirstRandom = randf_range(5, 7)
+@export var speedRandom: float = randf_range(20, 40)
+@export var hungerRandom: float = randf_range(5, 7)
+@export var thirstRandom: float = randf_range(5, 7)
 
 #aktualny stan agenta
 var hunger: float = 100
@@ -17,7 +17,7 @@ var thirst: float = 100
 var mating: bool = false
 
 #niezmienne statystyki agenta
-var speed: float = randf_range(speedRandom, speedRandom * 2)/2
+var speed: float = randf_range(speedRandom, speedRandom * 2)
 var hungerLoss: float = randf_range(hungerRandom, hungerRandom * 2)
 var thirstLoss: float = randf_range(thirstRandom, thirstRandom * 2)
 var matingSeason: int = randi_range(1, 4)

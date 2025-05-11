@@ -1,10 +1,6 @@
 extends CharacterBody2D
 class_name Rabbit
 
-#TODO
-#nav agent strasznie tweakuje, utyka po prostu na terenie
-#moze dodac losowe poruszanie do pozostalych stanow, wyczyscic process i wszystko w FSM?
-
 const RABBIT = preload("res://Scenes/Actors/Rabbit/Rabbit.tscn")
 
 @onready var stats: Stats = $Stats
@@ -28,6 +24,8 @@ var canDrink: bool
 var waterList: Vector2 = Vector2(INF, INF)
 var sex: int
 var partner
+var predator = null
+var predatorNear: bool = false
 
 #zmienne wykorzystywane do dziedziczenia genow przez dzieci
 var speedGene: float
@@ -43,7 +41,7 @@ func _ready() -> void:
 	nav_agent.target_position = position
 	#collision_shape_2d.disabled = true
 	#collision_shape_2d.set_deferred("disabled", true)
-	print(sex)
+	#print(sex)
 
 func _process(delta: float) -> void:
 	canDrink = wykryj_wode()
@@ -78,6 +76,7 @@ func _process(delta: float) -> void:
 	smp.set_param("isHungry", isHungry)
 	smp.set_param("isThirsty", isThirsty)
 	smp.set_param("mating", mating)
+	smp.set_param("predatorNear", predatorNear)
 	
 	#if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
 		#next_path_pos = nav_agent.get_next_path_position()
@@ -118,6 +117,11 @@ func _on_los_body_entered(body: Node2D) -> void:
 		if body.sex != sex and body.mating:
 			partner = body
 			body.partner = self
+	
+	if body.is_in_group("Chain1"):
+		if predator == null:
+			predator = body
+			predatorNear = true
 
 
 func _on_interact_body_entered(body: Node2D) -> void:
@@ -157,8 +161,10 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 			if foodList.size() > 0:
 				nav_agent.target_position = foodList[0]
 				#wywalanie jedzenia jesli go tam nie ma, mozna by jakos poprawic
-				if position.distance_to(nav_agent.target_position) < 1:
+				if position.distance_to(nav_agent.target_position) < 8:
 					foodList.pop_at(0)
+					if foodList.size() == 0:
+						foodList = []
 			else:
 				random_movement()
 		"Thirsty":
@@ -174,6 +180,12 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 				random_movement()
 			else:
 				nav_agent.target_position = partner.position
+		"Flee":
+			if predator != null:
+				var escapePosition: Vector2 = (predator.position - position) * (-1) #no clue czy ta matma dziala, chyba ta
+				nav_agent.target_position = escapePosition
+			else:
+				predatorNear = false
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
@@ -244,3 +256,8 @@ func birth():
 
 func inherit(_speedGene, _thirstGene, _hungerGene):
 	stats.reroll(_speedGene, _hungerGene, _thirstGene)
+
+
+func _on_los_body_exited(body: Node2D) -> void:
+	if body == predator:
+		predatorNear = false

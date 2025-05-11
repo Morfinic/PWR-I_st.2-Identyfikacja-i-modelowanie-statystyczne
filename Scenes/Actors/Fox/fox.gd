@@ -1,9 +1,5 @@
 extends CharacterBody2D
 
-#TODO
-#nav agent strasznie tweakuje, utyka po prostu na terenie
-#moze dodac losowe poruszanie do pozostalych stanow, wyczyscic process i wszystko w FSM?
-
 const FOX = preload("res://Scenes/Actors/Fox/fox.tscn")
 
 @onready var stats: Stats = $Stats
@@ -99,7 +95,7 @@ func die():
 
 
 func _on_los_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Rabbit") and food == null:
+	if body.is_in_group("Chain0") and food == null:
 		food = body
 		
 	if body.is_in_group("Fox") and mating:
@@ -110,7 +106,7 @@ func _on_los_body_entered(body: Node2D) -> void:
 
 func _on_interact_body_entered(body: Node2D) -> void:
 	#mozna dodac by nie jadly na zapas, po prostu wrzucenie isHungry sprawia ze navAgent nie dziala
-	if body.is_in_group("Rabbit") and isHungry:
+	if body.is_in_group("Chain0") and isHungry:
 		stats.hunger = 100
 		food = null
 		body.queue_free()
@@ -191,7 +187,7 @@ func random_movement():
 		var targetPosition
 		#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
 		while true:
-			targetPosition = self.global_position + Vector2(randf_range(-100, 100), randf_range(-100, 100))
+			targetPosition = self.global_position + Vector2(randf_range(-200, 200), randf_range(-200, 200))
 			var pozycja = tileset.local_to_map(targetPosition)
 			var tileId = tileset.get_cell_tile_data(pozycja)
 			if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):
