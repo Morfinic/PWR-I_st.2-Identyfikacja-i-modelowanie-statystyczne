@@ -33,16 +33,19 @@ autostart = true
 [node name="Creatures" type="Node" parent="."]
 script = ExtResource("6_jj65c")
 
+[node name="Fox" parent="Creatures" instance=ExtResource("9_nqsfe")]
+position = Vector2(-152, 40)
+
 [node name="Rabbit" parent="Creatures" instance=ExtResource("5_23k51")]
+position = Vector2(-120, 64)
 
 [node name="Rabbit2" parent="Creatures" instance=ExtResource("5_23k51")]
-position = Vector2(-128, 88)
+position = Vector2(-110, -128)
 
 [node name="Rabbit3" parent="Creatures" instance=ExtResource("5_23k51")]
-position = Vector2(-48, -120)
+position = Vector2(32, 144)
 
-[node name="Fox" parent="Creatures" instance=ExtResource("9_nqsfe")]
-position = Vector2(-156, -131)
+[node name="Rabbit4" parent="Creatures" instance=ExtResource("5_23k51")]
 
 [connection signal="timeout" from="Food/Food_Spawner" to="Food" method="_on_food_spawner_timeout"]
 [connection signal="child_entered_tree" from="Creatures" to="Creatures" method="_on_child_entered_tree"]

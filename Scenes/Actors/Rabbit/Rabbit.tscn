@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://c2j5esmf2y4b4"]
+[gd_scene load_steps=48 format=3 uid="uid://c2j5esmf2y4b4"]
 
 [ext_resource type="Texture2D" uid="uid://ugefb2v86tff" path="res://Assets/Rabbit.png" id="1_ishvb"]
 [ext_resource type="Script" uid="uid://ddfq3v1lqdwoh" path="res://Scenes/Actors/Rabbit/rabbit.gd" id="1_lmduu"]
@@ -8,37 +8,38 @@
 [ext_resource type="Script" uid="uid://dl4y05txmygyj" path="res://addons/imjp94.yafsm/src/states/State.gd" id="4_ahhtf"]
 [ext_resource type="Script" uid="uid://bj7guohfe8a00" path="res://addons/imjp94.yafsm/src/transitions/Transition.gd" id="5_qu6lk"]
 [ext_resource type="Script" uid="uid://caubk1kjtte7b" path="res://addons/imjp94.yafsm/src/conditions/BooleanCondition.gd" id="6_tg0d7"]
+[ext_resource type="Script" uid="uid://dfoqrjm3xdq6n" path="res://addons/imjp94.yafsm/src/conditions/IntegerCondition.gd" id="7_hr7xn"]
 [ext_resource type="PackedScene" uid="uid://dbvntcaqj0d5n" path="res://Agents/stats.tscn" id="9_tjm8o"]
 
 [sub_resource type="Resource" id="Resource_pwmye"]
 script = ExtResource("4_ahhtf")
 name = "Entry"
-metadata/graph_offset = Vector2(366, 182)
+metadata/graph_offset = Vector2(363, 181.5)
 
 [sub_resource type="Resource" id="Resource_n2a8r"]
 script = ExtResource("4_ahhtf")
 name = "Flee"
-metadata/graph_offset = Vector2(803, 121.5)
+metadata/graph_offset = Vector2(1643, 401.5)
 
 [sub_resource type="Resource" id="Resource_pyj1p"]
 script = ExtResource("4_ahhtf")
 name = "Hungry"
-metadata/graph_offset = Vector2(965.5, -18)
+metadata/graph_offset = Vector2(983, 81.5)
 
 [sub_resource type="Resource" id="Resource_v55o4"]
 script = ExtResource("4_ahhtf")
 name = "Idle"
-metadata/graph_offset = Vector2(566, -18)
+metadata/graph_offset = Vector2(563, 181.5)
 
 [sub_resource type="Resource" id="Resource_j0ny3"]
 script = ExtResource("4_ahhtf")
 name = "Mating"
-metadata/graph_offset = Vector2(863, 381.5)
+metadata/graph_offset = Vector2(903, 641.5)
 
 [sub_resource type="Resource" id="Resource_5yidy"]
 script = ExtResource("4_ahhtf")
 name = "Thirsty"
-metadata/graph_offset = Vector2(566, 382)
+metadata/graph_offset = Vector2(503, 561.5)
 
 [sub_resource type="Resource" id="Resource_hgcrq"]
 script = ExtResource("5_qu6lk")
@@ -47,10 +48,25 @@ to = "Idle"
 conditions = {}
 priority = 0
 
-[sub_resource type="Resource" id="Resource_2y55j"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
+[sub_resource type="Resource" id="Resource_4vjtv"]
+script = ExtResource("7_hr7xn")
+value = 0
+comparation = 5
+name = "predatorNear"
+
+[sub_resource type="Resource" id="Resource_hr7xn"]
+script = ExtResource("5_qu6lk")
+from = "Flee"
+to = "Idle"
+conditions = {
+"predatorNear": SubResource("Resource_4vjtv")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_dtv72"]
+script = ExtResource("7_hr7xn")
+value = 0
+comparation = 2
 name = "predatorNear"
 
 [sub_resource type="Resource" id="Resource_defl4"]
@@ -58,7 +74,7 @@ script = ExtResource("5_qu6lk")
 from = "Hungry"
 to = "Flee"
 conditions = {
-"predatorNear": SubResource("Resource_2y55j")
+"predatorNear": SubResource("Resource_dtv72")
 }
 priority = 0
 
@@ -77,10 +93,10 @@ conditions = {
 }
 priority = 0
 
-[sub_resource type="Resource" id="Resource_qyngy"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
+[sub_resource type="Resource" id="Resource_xq70u"]
+script = ExtResource("7_hr7xn")
+value = 0
+comparation = 2
 name = "predatorNear"
 
 [sub_resource type="Resource" id="Resource_8psrp"]
@@ -88,7 +104,7 @@ script = ExtResource("5_qu6lk")
 from = "Idle"
 to = "Flee"
 conditions = {
-"predatorNear": SubResource("Resource_qyngy")
+"predatorNear": SubResource("Resource_xq70u")
 }
 priority = 0
 
@@ -137,10 +153,10 @@ conditions = {
 }
 priority = 0
 
-[sub_resource type="Resource" id="Resource_jaqhi"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
+[sub_resource type="Resource" id="Resource_a2nv8"]
+script = ExtResource("7_hr7xn")
+value = 0
+comparation = 2
 name = "predatorNear"
 
 [sub_resource type="Resource" id="Resource_07qxg"]
@@ -148,7 +164,7 @@ script = ExtResource("5_qu6lk")
 from = "Mating"
 to = "Flee"
 conditions = {
-"predatorNear": SubResource("Resource_jaqhi")
+"predatorNear": SubResource("Resource_a2nv8")
 }
 priority = 0
 
@@ -197,10 +213,10 @@ conditions = {
 }
 priority = 0
 
-[sub_resource type="Resource" id="Resource_w7wir"]
-script = ExtResource("6_tg0d7")
-value = true
-comparation = 0
+[sub_resource type="Resource" id="Resource_ahnx1"]
+script = ExtResource("7_hr7xn")
+value = 0
+comparation = 2
 name = "predatorNear"
 
 [sub_resource type="Resource" id="Resource_y23dw"]
@@ -208,7 +224,7 @@ script = ExtResource("5_qu6lk")
 from = "Thirsty"
 to = "Flee"
 conditions = {
-"predatorNear": SubResource("Resource_w7wir")
+"predatorNear": SubResource("Resource_ahnx1")
 }
 priority = 0
 
@@ -224,21 +240,6 @@ from = "Thirsty"
 to = "Idle"
 conditions = {
 "isThirsty": SubResource("Resource_xige6")
-}
-priority = 0
-
-[sub_resource type="Resource" id="Resource_tjm8o"]
-script = ExtResource("6_tg0d7")
-value = false
-comparation = 0
-name = "predatorNear"
-
-[sub_resource type="Resource" id="Resource_hr7xn"]
-script = ExtResource("5_qu6lk")
-from = "Flee"
-to = "Idle"
-conditions = {
-"predatorNear": SubResource("Resource_tjm8o")
 }
 priority = 0
 

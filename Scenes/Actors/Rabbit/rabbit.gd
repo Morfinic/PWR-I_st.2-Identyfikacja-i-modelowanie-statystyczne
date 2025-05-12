@@ -25,7 +25,7 @@ var waterList: Vector2 = Vector2(INF, INF)
 var sex: int
 var partner
 var predator = null
-var predatorNear: bool = false
+var predatorNear: int = 0
 
 #zmienne wykorzystywane do dziedziczenia genow przez dzieci
 var speedGene: float
@@ -121,7 +121,7 @@ func _on_los_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Chain1"):
 		if predator == null:
 			predator = body
-			predatorNear = true
+		predatorNear += 1
 
 
 func _on_interact_body_entered(body: Node2D) -> void:
@@ -182,10 +182,10 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 				nav_agent.target_position = partner.position
 		"Flee":
 			if predator != null:
-				var escapePosition: Vector2 = (predator.position - position) * (-1) #no clue czy ta matma dziala, chyba ta
+				var escapePosition: Vector2 = (predator.position - position) * -1 #no clue czy ta matma dziala, chyba ta
 				nav_agent.target_position = escapePosition
-			else:
-				predatorNear = false
+			#else:
+				#predatorNear = false
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
@@ -260,4 +260,4 @@ func inherit(_speedGene, _thirstGene, _hungerGene):
 
 func _on_los_body_exited(body: Node2D) -> void:
 	if body == predator:
-		predatorNear = false
+		predatorNear -= 1
