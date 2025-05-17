@@ -7,9 +7,9 @@ signal death
 @onready var mating_timer: Timer = $MatingTimer
 
 #zmienne do losowanie statystyk, dziedziczone po rodzicach
-@export var speedRandom: float = randf_range(20, 40)
-@export var hungerRandom: float = randf_range(5, 7)
-@export var thirstRandom: float = randf_range(5, 7)
+@export var speedRandom: float
+@export var hungerRandom: float
+@export var thirstRandom: float
 
 #aktualny stan agenta
 var hunger: float = 100
@@ -26,6 +26,9 @@ var sex: int = randi_range(0, 1)
 func _ready() -> void:
 	$MatingTimer.wait_time = matingSeason
 	$MatingTimer.start()
+	speed = randf_range(speedRandom, speedRandom * 2)
+	hungerLoss = randf_range(hungerRandom, hungerRandom * 2)
+	thirstLoss = randf_range(thirstRandom, thirstRandom * 2)
 
 func _process(delta: float) -> void:
 	hunger -= hungerLoss * delta

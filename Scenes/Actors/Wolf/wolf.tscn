@@ -1,0 +1,252 @@
+[gd_scene load_steps=35 format=3 uid="uid://b6romgxqdjla3"]
+
+[ext_resource type="Script" uid="uid://vfwq1dl3vtkn" path="res://Scenes/Actors/Wolf/wolf.gd" id="1_k442p"]
+[ext_resource type="Script" uid="uid://c3xmcug88k0h2" path="res://addons/imjp94.yafsm/src/StateMachinePlayer.gd" id="1_yu7uj"]
+[ext_resource type="Texture2D" uid="uid://bpetwmjr52npb" path="res://Assets/wolf.png" id="2_k442p"]
+[ext_resource type="Script" uid="uid://bpp3av5t2yjim" path="res://addons/imjp94.yafsm/src/states/StateMachine.gd" id="3_21acj"]
+[ext_resource type="PackedScene" uid="uid://dbvntcaqj0d5n" path="res://Agents/stats.tscn" id="3_xurgg"]
+[ext_resource type="Script" uid="uid://dl4y05txmygyj" path="res://addons/imjp94.yafsm/src/states/State.gd" id="4_idngg"]
+[ext_resource type="Script" uid="uid://bj7guohfe8a00" path="res://addons/imjp94.yafsm/src/transitions/Transition.gd" id="5_sqfsf"]
+[ext_resource type="Script" uid="uid://caubk1kjtte7b" path="res://addons/imjp94.yafsm/src/conditions/BooleanCondition.gd" id="6_cel72"]
+
+[sub_resource type="Resource" id="Resource_gl4gy"]
+script = ExtResource("4_idngg")
+name = "Entry"
+metadata/graph_offset = Vector2(363, 181.5)
+
+[sub_resource type="Resource" id="Resource_1fjxd"]
+script = ExtResource("4_idngg")
+name = "Hungry"
+metadata/graph_offset = Vector2(763, 41.5)
+
+[sub_resource type="Resource" id="Resource_mdkn8"]
+script = ExtResource("4_idngg")
+name = "Idle"
+metadata/graph_offset = Vector2(563, 181.5)
+
+[sub_resource type="Resource" id="Resource_6bapq"]
+script = ExtResource("4_idngg")
+name = "Mating"
+metadata/graph_offset = Vector2(963, 181.5)
+
+[sub_resource type="Resource" id="Resource_md17q"]
+script = ExtResource("4_idngg")
+name = "Thirsty"
+metadata/graph_offset = Vector2(763, 301.5)
+
+[sub_resource type="Resource" id="Resource_0pdip"]
+script = ExtResource("5_sqfsf")
+from = "Entry"
+to = "Idle"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_mxhoq"]
+script = ExtResource("6_cel72")
+value = false
+comparation = 0
+name = "isHungry"
+
+[sub_resource type="Resource" id="Resource_t0o6q"]
+script = ExtResource("5_sqfsf")
+from = "Hungry"
+to = "Idle"
+conditions = {
+"isHungry": SubResource("Resource_mxhoq")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_04l55"]
+script = ExtResource("6_cel72")
+value = true
+comparation = 0
+name = "isHungry"
+
+[sub_resource type="Resource" id="Resource_gqnyp"]
+script = ExtResource("5_sqfsf")
+from = "Idle"
+to = "Hungry"
+conditions = {
+"isHungry": SubResource("Resource_04l55")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_lfrik"]
+script = ExtResource("6_cel72")
+value = true
+comparation = 0
+name = "mating"
+
+[sub_resource type="Resource" id="Resource_i2f6f"]
+script = ExtResource("5_sqfsf")
+from = "Idle"
+to = "Mating"
+conditions = {
+"mating": SubResource("Resource_lfrik")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_nqdbl"]
+script = ExtResource("6_cel72")
+value = true
+comparation = 0
+name = "isThirsty"
+
+[sub_resource type="Resource" id="Resource_sfuno"]
+script = ExtResource("5_sqfsf")
+from = "Idle"
+to = "Thirsty"
+conditions = {
+"isThirsty": SubResource("Resource_nqdbl")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_rcw5r"]
+script = ExtResource("6_cel72")
+value = true
+comparation = 0
+name = "isHungry"
+
+[sub_resource type="Resource" id="Resource_8f7fo"]
+script = ExtResource("5_sqfsf")
+from = "Mating"
+to = "Hungry"
+conditions = {
+"isHungry": SubResource("Resource_rcw5r")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_qtbbl"]
+script = ExtResource("6_cel72")
+value = false
+comparation = 0
+name = "mating"
+
+[sub_resource type="Resource" id="Resource_k7cg4"]
+script = ExtResource("5_sqfsf")
+from = "Mating"
+to = "Idle"
+conditions = {
+"mating": SubResource("Resource_qtbbl")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_kxife"]
+script = ExtResource("6_cel72")
+value = true
+comparation = 0
+name = "isThirsty"
+
+[sub_resource type="Resource" id="Resource_l6hsr"]
+script = ExtResource("5_sqfsf")
+from = "Mating"
+to = "Thirsty"
+conditions = {
+"isThirsty": SubResource("Resource_kxife")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_312lq"]
+script = ExtResource("6_cel72")
+value = false
+comparation = 0
+name = "isThirsty"
+
+[sub_resource type="Resource" id="Resource_pb7w5"]
+script = ExtResource("5_sqfsf")
+from = "Thirsty"
+to = "Idle"
+conditions = {
+"isThirsty": SubResource("Resource_312lq")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_4kwn7"]
+script = ExtResource("3_21acj")
+states = {
+"Entry": SubResource("Resource_gl4gy"),
+"Hungry": SubResource("Resource_1fjxd"),
+"Idle": SubResource("Resource_mdkn8"),
+"Mating": SubResource("Resource_6bapq"),
+"Thirsty": SubResource("Resource_md17q")
+}
+transitions = {
+"Entry": {
+"Idle": SubResource("Resource_0pdip")
+},
+"Hungry": {
+"Idle": SubResource("Resource_t0o6q")
+},
+"Idle": {
+"Hungry": SubResource("Resource_gqnyp"),
+"Mating": SubResource("Resource_i2f6f"),
+"Thirsty": SubResource("Resource_sfuno")
+},
+"Mating": {
+"Hungry": SubResource("Resource_8f7fo"),
+"Idle": SubResource("Resource_k7cg4"),
+"Thirsty": SubResource("Resource_l6hsr")
+},
+"Thirsty": {
+"Idle": SubResource("Resource_pb7w5")
+}
+}
+name = ""
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_15ic6"]
+size = Vector2(48, 31)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rf0bk"]
+radius = 310.006
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21acj"]
+radius = 29.0172
+
+[node name="Wolf" type="CharacterBody2D" groups=["Chain1", "Chain2", "Wolf"]]
+scale = Vector2(0.5, 0.5)
+collision_mask = 0
+script = ExtResource("1_k442p")
+
+[node name="StateMachinePlayer" type="Node" parent="."]
+script = ExtResource("1_yu7uj")
+state_machine = SubResource("Resource_4kwn7")
+metadata/_custom_type_script = "uid://c3xmcug88k0h2"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_k442p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_15ic6")
+
+[node name="LOS" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LOS"]
+shape = SubResource("CircleShape2D_rf0bk")
+debug_color = Color(0.9593, 0.0764322, 0.472181, 0.42)
+
+[node name="Interact" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact"]
+shape = SubResource("CircleShape2D_21acj")
+debug_color = Color(0, 0.647435, 0.211125, 0.42)
+
+[node name="Stats" parent="." instance=ExtResource("3_xurgg")]
+type = 0
+speedRandom = 30.0
+hungerRandom = 4.0
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = -63.0
+offset_top = -40.0
+offset_right = 69.0
+offset_bottom = -17.0
+text = "TEST"
+horizontal_alignment = 1
+
+[connection signal="updated" from="StateMachinePlayer" to="." method="_on_state_machine_player_updated"]
+[connection signal="body_entered" from="LOS" to="." method="_on_los_body_entered"]
+[connection signal="body_entered" from="Interact" to="." method="_on_interact_body_entered"]

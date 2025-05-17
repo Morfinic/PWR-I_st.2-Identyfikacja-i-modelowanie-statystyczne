@@ -21,6 +21,8 @@ var canDrink: bool
 var waterList: Vector2 = Vector2(INF, INF)
 var sex: int
 var partner = null
+var predator = null
+var predatorNear: int = 0
 
 #zmienne wykorzystywane do dziedziczenia genow przez dzieci
 var speedGene: float
@@ -65,6 +67,7 @@ func _process(delta: float) -> void:
 	smp.set_param("isHungry", isHungry)
 	smp.set_param("isThirsty", isThirsty)
 	smp.set_param("mating", mating)
+	smp.set_param("predatorNear", predatorNear)
 	
 	#if (next_path_pos and next_path_pos == Vector2.ZERO) or self.position.distance_to(next_path_pos) < 0.5:
 		#next_path_pos = nav_agent.get_next_path_position()
@@ -102,6 +105,11 @@ func _on_los_body_entered(body: Node2D) -> void:
 		if body.sex != sex and body.mating and body.partner == null:
 			partner = body
 			body.partner = self
+	
+	if body.is_in_group("Chain2"):
+		if predator == null:
+			predator = body
+		predatorNear += 1
 
 
 func _on_interact_body_entered(body: Node2D) -> void:
@@ -145,6 +153,10 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 				random_movement()
 			else:
 				nav_agent.target_position = partner.position
+		"Flee":
+			if predator != null:
+				var escapePosition: Vector2 = (predator.position - position) * -1 #no clue czy ta matma dziala, chyba ta
+				nav_agent.target_position = escapePosition
 		_:
 			pass
 			#print("Nie powinno mnie tu byc")
@@ -228,3 +240,8 @@ func check_partner():
 				partner = i
 				i.partner = self
 				return
+
+
+func _on_los_body_exited(body: Node2D) -> void:
+	if body == predator:
+		predatorNear -= 1

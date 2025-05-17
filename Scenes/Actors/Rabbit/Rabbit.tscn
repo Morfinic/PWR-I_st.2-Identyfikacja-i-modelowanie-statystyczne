@@ -315,6 +315,9 @@ texture = ExtResource("1_ishvb")
 shape = SubResource("RectangleShape2D_k1juk")
 
 [node name="Stats" parent="." instance=ExtResource("9_tjm8o")]
+speedRandom = 20.0
+hungerRandom = 6.0
+thirstRandom = 6.0
 
 [node name="LOS" type="Area2D" parent="."]
 
@@ -342,7 +345,6 @@ target_desired_distance = 16.0
 path_postprocessing = 1
 avoidance_layers = 0
 avoidance_mask = 0
-debug_enabled = true
 debug_path_custom_color = Color(1, 0, 0, 1)
 
 [connection signal="updated" from="StateMachinePlayer" to="." method="_on_state_machine_player_updated"]

@@ -182,6 +182,7 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 				nav_agent.target_position = partner.position
 		"Flee":
 			if predator != null:
+				nav_agent.debug_enabled = true
 				var escapePosition: Vector2 = (predator.position - position) * -1 #no clue czy ta matma dziala, chyba ta
 				nav_agent.target_position = escapePosition
 			#else:
