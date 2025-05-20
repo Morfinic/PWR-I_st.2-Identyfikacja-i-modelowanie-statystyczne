@@ -26,6 +26,7 @@ var sex: int
 var partner
 var predator = null
 var predatorNear: int = 0
+var flee: bool = false
 
 #zmienne wykorzystywane do dziedziczenia genow przez dzieci
 var speedGene: float
@@ -95,6 +96,11 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if flee and is_instance_valid(predator):
+		#nav_agent.debug_enabled = true
+		var escapePosition: Vector2 = self.position - predator.position
+		nav_agent.target_position = escapePosition
+	
 	if self.position.distance_to(next_path_pos) < 1:
 		next_path_pos = nav_agent.get_next_path_position()
 	else:
@@ -119,8 +125,7 @@ func _on_los_body_entered(body: Node2D) -> void:
 			body.partner = self
 	
 	if body.is_in_group("Chain1"):
-		if predator == null:
-			predator = body
+		predator = body
 		predatorNear += 1
 
 
@@ -151,6 +156,7 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 	label.text += " " + str(state)
 	match state:
 		"Idle":
+			flee = false
 			random_movement()
 			#if nav_agent.target_position != targetPosition:
 				#nav_agent.target_position = targetPosition
@@ -182,9 +188,11 @@ func _on_state_machine_player_updated(state: Variant, delta: Variant) -> void:
 				nav_agent.target_position = partner.position
 		"Flee":
 			if predator != null:
-				nav_agent.debug_enabled = true
-				var escapePosition: Vector2 = (predator.position - position) * -1 #no clue czy ta matma dziala, chyba ta
-				nav_agent.target_position = escapePosition
+				#nav_agent.debug_enabled = true
+				#var escapePosition: Vector2 = (position - predator.position)
+				#print(escapePosition)
+				#nav_agent.target_position = escapePosition
+				flee = true
 			#else:
 				#predatorNear = false
 		_:
@@ -260,5 +268,8 @@ func inherit(_speedGene, _thirstGene, _hungerGene):
 
 
 func _on_los_body_exited(body: Node2D) -> void:
-	if body == predator:
+	if body.is_in_group("Chain1"):
 		predatorNear -= 1
+		
+		if predator == body:
+			predator == null

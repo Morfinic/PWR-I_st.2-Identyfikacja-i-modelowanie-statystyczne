@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://tty0xdktpxg0"]
+[gd_scene load_steps=10 format=4 uid="uid://tty0xdktpxg0"]
 
 [ext_resource type="TileSet" uid="uid://bd8ch4bvkx38n" path="res://Assets/ecosystem.tres" id="1_3v1yy"]
 [ext_resource type="Script" uid="uid://dbcdno15uk2i" path="res://Scenes/Enviroment/ecosystem.gd" id="1_mg0hv"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://c2j5esmf2y4b4" path="res://Scenes/Actors/Rabbit/Rabbit.tscn" id="5_23k51"]
 [ext_resource type="Script" uid="uid://imgcjc31ctko" path="res://Agents/Scripts/creatures.gd" id="6_jj65c"]
 [ext_resource type="PackedScene" uid="uid://bdl8qamyef7w7" path="res://Scenes/Actors/Fox/fox.tscn" id="9_nqsfe"]
-[ext_resource type="PackedScene" uid="uid://b6romgxqdjla3" path="res://Scenes/Actors/Wolf/wolf.tscn" id="10_s46nd"]
 
 [node name="Ecosystem" type="Node"]
 script = ExtResource("1_mg0hv")
@@ -37,19 +36,23 @@ script = ExtResource("6_jj65c")
 [node name="Fox" parent="Creatures" instance=ExtResource("9_nqsfe")]
 position = Vector2(-152, 40)
 
+[node name="Fox2" parent="Creatures" instance=ExtResource("9_nqsfe")]
+position = Vector2(120, -47)
+
 [node name="Rabbit" parent="Creatures" instance=ExtResource("5_23k51")]
 position = Vector2(-120, 64)
 
 [node name="Rabbit2" parent="Creatures" instance=ExtResource("5_23k51")]
-position = Vector2(-110, -128)
+position = Vector2(-42, -89)
 
 [node name="Rabbit3" parent="Creatures" instance=ExtResource("5_23k51")]
-position = Vector2(32, 144)
+position = Vector2(-7, 132)
 
 [node name="Rabbit4" parent="Creatures" instance=ExtResource("5_23k51")]
+position = Vector2(206, -84)
 
-[node name="Wolf" parent="Creatures" instance=ExtResource("10_s46nd")]
-position = Vector2(142, -152)
+[node name="Rabbit5" parent="Creatures" instance=ExtResource("5_23k51")]
+position = Vector2(-175, -45)
 
 [connection signal="timeout" from="Food/Food_Spawner" to="Food" method="_on_food_spawner_timeout"]
 [connection signal="child_entered_tree" from="Creatures" to="Creatures" method="_on_child_entered_tree"]

@@ -19,7 +19,7 @@ metadata/graph_offset = Vector2(363, 181.5)
 [sub_resource type="Resource" id="Resource_n2a8r"]
 script = ExtResource("4_ahhtf")
 name = "Flee"
-metadata/graph_offset = Vector2(1643, 401.5)
+metadata/graph_offset = Vector2(1650.5, 410.5)
 
 [sub_resource type="Resource" id="Resource_pyj1p"]
 script = ExtResource("4_ahhtf")
