@@ -77,10 +77,16 @@ script = ExtResource("4_0ysgs")
 
 [node name="Wykres" parent="Camera2D" instance=ExtResource("5_s46nd")]
 anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
