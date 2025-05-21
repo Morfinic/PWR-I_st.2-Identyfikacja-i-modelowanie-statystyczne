@@ -315,7 +315,7 @@ texture = ExtResource("1_ishvb")
 shape = SubResource("RectangleShape2D_k1juk")
 
 [node name="Stats" parent="." instance=ExtResource("9_tjm8o")]
-speedRandom = 20.0
+speedRandom = 25.0
 hungerRandom = 6.0
 thirstRandom = 6.0
 

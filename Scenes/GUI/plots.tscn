@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c02niy2u4fya1"]
+
+[ext_resource type="Script" uid="uid://lqrfwutqptqf" path="res://Scenes/GUI/plots.gd" id="1_4vt5o"]
+[ext_resource type="Script" uid="uid://bogd4m8j0x6xq" path="res://addons/god_plot/tools/graphs/graph_2d.gd" id="1_5jx64"]
+
+[node name="Plots" type="CanvasLayer"]
+script = ExtResource("1_4vt5o")
+
+[node name="Graph2D" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5jx64")
+background_color = Color(1, 1, 1, 1)
+metadata/_custom_type_script = "uid://bogd4m8j0x6xq"
