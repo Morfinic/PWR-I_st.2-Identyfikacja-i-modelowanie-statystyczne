@@ -237,7 +237,6 @@ speedRandom = 30.0
 hungerRandom = 4.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="Label" type="Label" parent="."]
 offset_left = -63.0
