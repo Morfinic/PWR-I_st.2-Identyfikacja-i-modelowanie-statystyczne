@@ -103,11 +103,12 @@ func die():
 
 
 func _on_los_body_entered(body: Node2D) -> void:
-	if (body.is_in_group("Chain0") or body.is_in_group("Chain1")) and food == null:
+	if (body.is_in_group("Chain0") or body.is_in_group("Chain1")):
 		if body != self and !body.is_in_group("Chain2"):
-			food = body
-			print("Znaleziono jedzenie: Wilk")
-			print(food)
+			if food == null:
+				food = body
+			elif position.distance_to(body.position) < position.distance_to(food.position):
+				food = body
 		
 	if body.is_in_group("Wolf") and mating:
 		if body.sex != sex and body.mating and body.partner == null:
@@ -197,7 +198,7 @@ func random_movement():
 		var targetPosition
 		#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
 		while true:
-			targetPosition = self.global_position + Vector2(randf_range(-200, 200), randf_range(-200, 200))
+			targetPosition = self.global_position + Vector2(randf_range(-400, 400), randf_range(-400, 400))
 			var pozycja = tileset.local_to_map(targetPosition)
 			var tileId = tileset.get_cell_tile_data(pozycja)
 			if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):

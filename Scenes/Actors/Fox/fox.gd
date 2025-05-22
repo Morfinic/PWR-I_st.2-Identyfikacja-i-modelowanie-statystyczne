@@ -199,7 +199,7 @@ func random_movement():
 		var targetPosition
 		#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
 		while true:
-			targetPosition = self.global_position + Vector2(randf_range(-200, 200), randf_range(-200, 200))
+			targetPosition = self.global_position + Vector2(randf_range(-300, 300), randf_range(-300, 300))
 			var pozycja = tileset.local_to_map(targetPosition)
 			var tileId = tileset.get_cell_tile_data(pozycja)
 			if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):

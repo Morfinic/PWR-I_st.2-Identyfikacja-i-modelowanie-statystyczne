@@ -20,7 +20,7 @@ var mating: bool = false
 var speed: float = randf_range(speedRandom, speedRandom * 2)
 var hungerLoss: float = randf_range(hungerRandom, hungerRandom * 2)
 var thirstLoss: float = randf_range(thirstRandom, thirstRandom * 2)
-var matingSeason: int = randi_range(1, 4)
+var matingSeason: int = randi_range(2, 8)
 var sex: int = randi_range(0, 1)
 
 func _ready() -> void:
@@ -49,7 +49,7 @@ func reroll(speedGene, hungerGene, thirstGene):
 	hungerRandom = hungerGene
 	thirstRandom = thirstGene
 	
-	speed = randf_range(speedRandom, speedRandom * 2)/2
+	speed = randf_range(speedRandom, speedRandom * 2)
 	hungerLoss = randf_range(hungerRandom, hungerRandom * 2)
 	thirstLoss = randf_range(thirstRandom, thirstRandom * 2)
 	

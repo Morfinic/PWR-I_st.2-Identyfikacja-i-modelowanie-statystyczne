@@ -40,6 +40,7 @@ func _ready() -> void:
 	thirstGene = stats.thirstRandom
 	hungerGene = stats.hungerRandom
 	nav_agent.target_position = position
+	next_path_pos = position
 	#collision_shape_2d.disabled = true
 	#collision_shape_2d.set_deferred("disabled", true)
 	#print(sex)
@@ -234,7 +235,7 @@ func random_movement():
 		var targetPosition
 		#goofy petla by nie wchodzil na pustynie losowo ale mogl wejsc tam po jedzenie
 		while true:
-			targetPosition = self.global_position + Vector2(randf_range(-100, 100), randf_range(-100, 100))
+			targetPosition = self.global_position + Vector2(randf_range(-200, 200), randf_range(-200, 200))
 			var pozycja = tileset.local_to_map(targetPosition)
 			var tileId = tileset.get_cell_tile_data(pozycja)
 			if tileId != null and (tileId.get_custom_data("BiomeType") == "Any" or tileId.get_custom_data("BiomeType") == "Forest"):

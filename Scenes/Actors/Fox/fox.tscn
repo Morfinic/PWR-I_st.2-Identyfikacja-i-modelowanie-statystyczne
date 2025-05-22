@@ -326,9 +326,9 @@ shape = SubResource("CircleShape2D_4rxq6")
 
 [node name="Stats" parent="." instance=ExtResource("3_4430p")]
 type = 0
-speedRandom = 30.0
-hungerRandom = 6.0
-thirstRandom = 5.0
+speedRandom = 40.0
+hungerRandom = 2.0
+thirstRandom = 3.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 16.0
