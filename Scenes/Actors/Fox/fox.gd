@@ -98,8 +98,11 @@ func die():
 
 
 func _on_los_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Chain0") and food == null:
-		food = body
+	if (body.is_in_group("Chain0")):
+		if food == null:
+			food = body
+		elif position.distance_to(body.position) < position.distance_to(food.position):
+			food = body
 		
 	if body.is_in_group("Fox") and mating:
 		if body.sex != sex and body.mating and body.partner == null:

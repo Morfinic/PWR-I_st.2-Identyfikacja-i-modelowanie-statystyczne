@@ -94,6 +94,12 @@ position = Vector2(928, -515)
 [node name="Rabbit25" parent="Rabbits" instance=ExtResource("5_23k51")]
 position = Vector2(212, 337)
 
+[node name="Rabbit8" parent="Rabbits" instance=ExtResource("5_23k51")]
+position = Vector2(-13, -547)
+
+[node name="Rabbit14" parent="Rabbits" instance=ExtResource("5_23k51")]
+position = Vector2(-125, -478)
+
 [node name="Foxes" type="Node" parent="."]
 script = ExtResource("6_jj65c")
 
@@ -130,6 +136,21 @@ position = Vector2(-574, 305)
 [node name="Fox11" parent="Foxes" instance=ExtResource("9_nqsfe")]
 position = Vector2(555, -583)
 
+[node name="Fox12" parent="Foxes" instance=ExtResource("9_nqsfe")]
+position = Vector2(-452, -53)
+
+[node name="Fox13" parent="Foxes" instance=ExtResource("9_nqsfe")]
+position = Vector2(479, -101)
+
+[node name="Fox14" parent="Foxes" instance=ExtResource("9_nqsfe")]
+position = Vector2(754, -364)
+
+[node name="Fox15" parent="Foxes" instance=ExtResource("9_nqsfe")]
+position = Vector2(1052, -71)
+
+[node name="Fox16" parent="Foxes" instance=ExtResource("9_nqsfe")]
+position = Vector2(-777, 366)
+
 [node name="Wolves" type="Node" parent="."]
 script = ExtResource("6_jj65c")
 
@@ -156,6 +177,15 @@ position = Vector2(-726, -469)
 
 [node name="Wolf8" parent="Wolves" instance=ExtResource("9_c7a5h")]
 position = Vector2(321, -457)
+
+[node name="Wolf9" parent="Wolves" instance=ExtResource("9_c7a5h")]
+position = Vector2(-764, -86)
+
+[node name="Wolf10" parent="Wolves" instance=ExtResource("9_c7a5h")]
+position = Vector2(1018, 416)
+
+[node name="Wolf11" parent="Wolves" instance=ExtResource("9_c7a5h")]
+position = Vector2(1092, -543)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)

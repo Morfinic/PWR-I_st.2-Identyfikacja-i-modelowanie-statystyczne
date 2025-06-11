@@ -233,9 +233,10 @@ debug_color = Color(0, 0.647435, 0.211125, 0.42)
 
 [node name="Stats" parent="." instance=ExtResource("3_xurgg")]
 type = 0
-speedRandom = 45.0
+speedRandom = 40.0
 hungerRandom = 3.0
 thirstRandom = 2.0
+mateRandom = 8
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 

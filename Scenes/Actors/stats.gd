@@ -10,6 +10,7 @@ signal death
 @export var speedRandom: float
 @export var hungerRandom: float
 @export var thirstRandom: float
+@export var mateRandom: int
 
 #aktualny stan agenta
 var hunger: float = 100
@@ -20,10 +21,11 @@ var mating: bool = false
 var speed: float = randf_range(speedRandom, speedRandom * 2)
 var hungerLoss: float = randf_range(hungerRandom, hungerRandom * 2)
 var thirstLoss: float = randf_range(thirstRandom, thirstRandom * 2)
-var matingSeason: int = randi_range(2, 8)
+var matingSeason: int
 var sex: int = randi_range(0, 1)
 
 func _ready() -> void:
+	matingSeason = randi_range(mateRandom, mateRandom * 2)
 	$MatingTimer.wait_time = matingSeason
 	$MatingTimer.start()
 	speed = randf_range(speedRandom, speedRandom * 2)
